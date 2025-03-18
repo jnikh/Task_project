@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "ES6", // Compile to ES6 JavaScript
+      "module": "commonjs", // Use CommonJS modules
+      "outDir": "./dist", // Output directory for compiled files
+      "rootDir": "./src", // Source directory for TypeScript files
+      "strict": true, // Enable strict type-checking
+      "strictPropertyInitialization": false,
+      "esModuleInterop": true, // Enable ES module interoperability
+      "emitDecoratorMetadata": true, // Required for TypeORM decorators
+      "experimentalDecorators": true // Required for TypeORM decorators
+    },
+    "include": ["src/**/*.ts"], // Include all TypeScript files in the src directory
+    "exclude": ["node_modules"] // Exclude node_modules from compilation
+  }
