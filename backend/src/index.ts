@@ -5,33 +5,36 @@ import multer from "multer";
 import cors from "cors";
 import path from "path";
 import fs from "fs";
+import dotenv from "dotenv";
 
 const app = express();
+dotenv.config();
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "uploads/"); // Save files in the "uploads" folder
+      cb(null, "uploads/"); 
     },
     filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); // Generate a unique suffix
-      const extension = path.extname(file.originalname); // Get the file extension (e.g., .jpg, .png)
-      cb(null, file.fieldname + "-" + uniqueSuffix + extension); // Construct the filename
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); 
+      const extension = path.extname(file.originalname); 
+      cb(null, file.fieldname + "-" + uniqueSuffix + extension); 
     },
   });
-const upload = multer({ storage }); // Configure multer to store files in the "uploads" folder
+const upload = multer({ storage }); 
 
 app.use(cors());
 app.use(express.json());
 
-// Serve uploaded files statically
+
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres", // Replace with your PostgreSQL username
-  password: "root", // Replace with your PostgreSQL password
-  database: "ecommerce_db",
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || "5432"),
+  username: process.env.DB_USERNAME, 
+  password: process.env.DB_PASSWORD, 
+  database: process.env.DB_DATABASE,
   synchronize: true,
   logging: false,
   entities: ["src/entity/**/*.ts"],
