@@ -1,0 +1,26 @@
+<div class="container mt-5  ">
+<h2>Edit Product</h2>
+
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="d-flex flex-column">
+  <!-- Name Field -->
+  <label for="name">Name:</label>
+  <input id="name" formControlName="name" />
+
+  <!-- Price Field -->
+  <label for="price">Price:</label>
+  <input id="price" type="number" formControlName="price" />
+
+  <!-- SKU Field -->
+  <label for="sku">SKU:</label>
+  <input id="sku" formControlName="sku" />
+
+  <!-- Image Upload -->
+  <label for="image">Product Image:</label>
+  <input id="image" type="file" (change)="onFileSelect($event)" accept="image/*" />
+
+  <!-- Image Preview -->
+  <img *ngIf="imagePreview" [src]="imagePreview" alt="Product Image" width="150" />
+
+  <button type="submit" [disabled]="editForm.invalid">Update Product</button>
+</form>
+</div>

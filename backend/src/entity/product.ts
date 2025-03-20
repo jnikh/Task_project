@@ -3,17 +3,17 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn()
-  id!: number; // Definite assignment assertion
+  id!: number; 
 
   @Column()
-  sku!: string; // Definite assignment assertion
+  sku!: string; 
 
   @Column()
-  name!: string; // Definite assignment assertion
+  name!: string; 
 
   @Column("decimal", { precision: 10, scale: 2 })
-  price!: number; // Definite assignment assertion
+  price!: number; 
 
   @Column("text", { array: true })
-  images!: string[]; // Definite assignment assertion
+  images!: string[]; 
 }

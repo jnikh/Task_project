@@ -52,15 +52,14 @@ AppDataSource.initialize()
     app.post("/products", upload.array("images"), async (req: Request, res: Response) => {
       const { sku, name, price } = req.body;
 
-      // Check if files were uploaded
       if (!req.files || !Array.isArray(req.files)) {
         res.status(400).json({ message: "No files uploaded" });
         return;
       }
 
-      // Save file paths (relative to the "uploads" folder)
+    
       const images = (req.files as Express.Multer.File[]).map((file) => {
-        return `http://localhost:3000/uploads/${file.filename}`; // Save the full URL
+        return `http://localhost:3000/uploads/${file.filename}`; 
       });
 
       const product = productRepository.create({ sku, name, price, images });
@@ -68,14 +67,21 @@ AppDataSource.initialize()
       res.status(201).json(product);
     });
 
-    // Get all products
+    
     app.get("/products", async (req: Request, res: Response) => {
       const products = await productRepository.find();
       res.json(products);
     });
 
-    // Update a product
-   // Update a product
+    app.get("/products/:id" , async (req: Request , res: Response) =>{
+      const {id} = req.params;
+      const products = await productRepository.find({ where: { id: parseInt(id) } });
+      res.json(products);
+  
+    })
+  
+
+    
 app.put("/products/:id", upload.array("images"), async (req: Request, res: Response) => {
     const { id } = req.params;
     const { sku, name, price } = req.body;
@@ -86,18 +92,18 @@ app.put("/products/:id", upload.array("images"), async (req: Request, res: Respo
       return;
     }
   
-    // Delete old images
+   
     product.images.forEach((imageUrl) => {
-      const filename = imageUrl.split("/").pop(); // Extract the filename from the URL
-      if (filename) { // Ensure filename is not undefined
-        const filePath = path.join(__dirname, "../uploads", filename); // Construct the local file path
-        fs.unlinkSync(filePath); // Delete the file
+      const filename = imageUrl.split("/").pop(); 
+      if (filename) { 
+        const filePath = path.join(__dirname, "../uploads", filename); 
+        fs.unlinkSync(filePath); 
       }
     });
   
-    // Add new images
+    
     const images = (req.files as Express.Multer.File[]).map((file) => {
-      return `http://localhost:3000/uploads/${file.filename}`; // Save the full URL
+      return `http://localhost:3000/uploads/${file.filename}`; 
     });
   
     product.sku = sku;
@@ -121,10 +127,10 @@ app.put("/products/:id", upload.array("images"), async (req: Request, res: Respo
   
     // Delete associated images
     product.images.forEach((imageUrl) => {
-      const filename = imageUrl.split("/").pop(); // Extract the filename from the URL
-      if (filename) { // Ensure filename is not undefined
-        const filePath = path.join(__dirname, "../uploads", filename); // Construct the local file path
-        fs.unlinkSync(filePath); // Delete the file
+      const filename = imageUrl.split("/").pop(); 
+      if (filename) { 
+        const filePath = path.join(__dirname, "../uploads", filename); 
+        fs.unlinkSync(filePath); 
       }
     });
   
@@ -132,7 +138,7 @@ app.put("/products/:id", upload.array("images"), async (req: Request, res: Respo
     res.status(204).send();
   });
 
-    // Start the server
+   
     app.listen(3000, () => {
       console.log("Server is running on http://localhost:3000");
     });
